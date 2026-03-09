@@ -25,18 +25,14 @@ try:
     _ArrowCursor = Qt.CursorShape.ArrowCursor
     _LeftButton = Qt.MouseButton.LeftButton
     _RightButton = Qt.MouseButton.RightButton
-    _KeyDelete = Qt.Key.Key_Delete
-    _KeyBackspace = Qt.Key.Key_Backspace
     _ControlModifier = Qt.KeyboardModifier.ControlModifier
 except AttributeError:
     _ArrowCursor = Qt.ArrowCursor
     _LeftButton = Qt.LeftButton
     _RightButton = Qt.RightButton
-    _KeyDelete = Qt.Key_Delete
-    _KeyBackspace = Qt.Key_Backspace
     _ControlModifier = Qt.ControlModifier
 
-# QGIS enum compatibility (QGIS 4 scoped enums vs QGIS 3.x flat enums)
+# QGIS enum compatibility
 try:
     _PolygonGeometry = QgsWkbTypes.GeometryType.Polygon
 except AttributeError:
@@ -46,6 +42,18 @@ try:
     _VectorLayerType = QgsMapLayer.LayerType.VectorLayer
 except AttributeError:
     _VectorLayerType = QgsMapLayer.VectorLayer
+
+try:
+    _IdentifyLayerSelection = QgsMapToolIdentify.Type.LayerSelection
+    _IdentifyVectorLayer = QgsMapToolIdentify.Type.VectorLayer
+except AttributeError:
+    _IdentifyLayerSelection = QgsMapToolIdentify.LayerSelection
+    _IdentifyVectorLayer = QgsMapToolIdentify.VectorLayer
+
+try:
+    _ExactIntersect = QgsFeatureRequest.Flag.ExactIntersect
+except AttributeError:
+    _ExactIntersect = QgsFeatureRequest.ExactIntersect
 
 
 class EditTool:
@@ -108,17 +116,21 @@ class GeometryInfoMapTool(QgsMapToolIdentify):
         return self.identify(
             p.x(),
             p.y(),
-            QgsMapToolIdentify.LayerSelection,
-            QgsMapToolIdentify.VectorLayer,
+            _IdentifyLayerSelection,
+            _IdentifyVectorLayer,
         )
 
-    def keyPressEvent(self, e):
-        if e.key() in (_KeyDelete, _KeyBackspace):
-            for layer in self.iface.mapCanvas().layers():
-                if layer.isEditable():
-                    for feat in layer.selectedFeatures():
-                        layer.deleteFeature(feat.id())
-            self.iface.mapCanvas().refresh()
+    def _cleanup_rb(self):
+        """Remove any active rubber band from the canvas."""
+        if self.rb:
+            self.iface.mapCanvas().scene().removeItem(self.rb)
+            self.rb = None
+        self._move = False
+
+    def deactivate(self):
+        """Clean up rubber band when the tool is deactivated."""
+        self._cleanup_rb()
+        super().deactivate()
 
     def canvasDoubleClickEvent(self, event):
         found_features = self._identify_at_event(event)
@@ -131,8 +143,6 @@ class GeometryInfoMapTool(QgsMapToolIdentify):
 
     def canvasPressEvent(self, event):
         if event.button() == _LeftButton:
-            layer = self.iface.activeLayer()
-
             self.rb = QgsRubberBand(self.iface.mapCanvas(), _PolygonGeometry)
             self.rb.setFillColor(QColor(255, 255, 255, 20))
             self.rb.setColor(QColor(0, 0, 0, 50))
@@ -294,7 +304,7 @@ class GeometryInfoMapTool(QgsMapToolIdentify):
                 geom = self.rb.asGeometry()
                 request = QgsFeatureRequest()
                 request.setFilterRect(geom.boundingBox())
-                request.setFlags(QgsFeatureRequest.ExactIntersect)
+                request.setFlags(_ExactIntersect)
 
                 for layer in self.iface.mapCanvas().layers():
                     if layer.type() == _VectorLayerType and layer.isEditable():
