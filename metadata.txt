@@ -1,0 +1,24 @@
+[general]
+name=Edit Tool
+description=A quick QGIS editing map tool with click/drag selection, Ctrl multi-select, right-click context actions, and fast access to vertex and reshape tools.
+version=1.0.0
+qgisMinimumVersion=3.40
+author=Regio OÜ
+email=regio@regio.ee
+category=Vector
+icon=icons/editTool.png
+supportsQt6=True
+about=Edit Tool improves QGIS editing workflow   by combining selection and editing shortcuts in one map tool. Use click and drag to select features, Ctrl to toggle selection, double-click to open the Vertex Tool, and right-click for quick access to layer and feature actions.
+
+tracker=https://github.com/regio-geospatial/regio-api-plugin/issues
+repository=https://github.com/regio-geospatial/regio-api-plugin
+
+changelog=
+    1.0.0 - Initial release
+
+tags=python, vecto,r selection, edit
+
+homepage=https://github.com/regio-geospatial/regio-api-plugin
+
+experimental=false
+deprecated=false
