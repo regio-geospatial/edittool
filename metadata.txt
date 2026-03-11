@@ -1,8 +1,9 @@
 [general]
 name=Edit Tool
 description=A quick QGIS editing map tool with click/drag selection, Ctrl multi-select, right-click context actions, and fast access to vertex and reshape tools.
-version=1.0.1
+version=1.0.2
 qgisMinimumVersion=3.40
+qgisMaximumVersion=4.99
 author=Regio OÜ
 email=geospatial@regio.ee
 category=Vector
@@ -16,6 +17,7 @@ repository=https://github.com/regio-geospatial/edittool
 changelog=
     1.0.1 - Initial release
     1.0.1 - Update metadata
+    1.0.2 - Added support for QGIS 4
 
 tags=vector, digitizing, editing, selection, maptool
 
