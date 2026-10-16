@@ -1,7 +1,7 @@
 [general]
 name=Edit Tool
 description=A quick QGIS editing map tool with click/drag selection, Ctrl multi-select, right-click context actions, and fast access to vertex and reshape tools.
-version=1.0.4
+version=1.0.5
 qgisMinimumVersion=3.40
 qgisMaximumVersion=4.99
 author=Regio OÜ
@@ -19,6 +19,7 @@ changelog=
     1.0.2 - Added support for QGIS 4
     1.0.3 - Update metadata
     1.0.4 - Compatibility improvements
+    1.0.5 - Compatibility improvements
 
 tags=vector, digitizing, editing, selection, maptool
 

@@ -27,36 +27,36 @@ try:
     _RightButton = Qt.MouseButton.RightButton
     _ControlModifier = Qt.KeyboardModifier.ControlModifier
 except AttributeError:
-    _ArrowCursor = Qt.ArrowCursor
-    _LeftButton = Qt.LeftButton
-    _RightButton = Qt.RightButton
-    _ControlModifier = Qt.ControlModifier
+    _ArrowCursor = getattr(Qt, "ArrowCursor")
+    _LeftButton = getattr(Qt, "LeftButton")
+    _RightButton = getattr(Qt, "RightButton")
+    _ControlModifier = getattr(Qt, "ControlModifier")
 
 # QGIS enum compatibility
 try:
     _PolygonGeometry = QgsWkbTypes.GeometryType.Polygon
 except AttributeError:
-    _PolygonGeometry = QgsWkbTypes.PolygonGeometry
+    _PolygonGeometry = getattr(QgsWkbTypes, "PolygonGeometry")
 
 try:
     _VectorLayerType = QgsMapLayer.LayerType.VectorLayer
 except AttributeError:
-    _VectorLayerType = QgsMapLayer.VectorLayer
+    _VectorLayerType = getattr(QgsMapLayer, "VectorLayer")
 
 try:
     _IdentifyLayerSelection = QgsMapToolIdentify.IdentifyMode.LayerSelection
 except AttributeError:
-    _IdentifyLayerSelection = QgsMapToolIdentify.LayerSelection
+    _IdentifyLayerSelection = getattr(QgsMapToolIdentify, "LayerSelection")
 
 try:
     _IdentifyVectorLayer = QgsMapToolIdentify.Type.VectorLayer
 except AttributeError:
-    _IdentifyVectorLayer = QgsMapToolIdentify.VectorLayer
+    _IdentifyVectorLayer = getattr(QgsMapToolIdentify, "VectorLayer")
 
 try:
     _ExactIntersect = QgsFeatureRequest.Flag.ExactIntersect
 except AttributeError:
-    _ExactIntersect = QgsFeatureRequest.ExactIntersect
+    _ExactIntersect = getattr(QgsFeatureRequest, "ExactIntersect")
 
 
 class EditTool:
