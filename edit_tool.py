@@ -44,10 +44,13 @@ except AttributeError:
     _VectorLayerType = QgsMapLayer.VectorLayer
 
 try:
-    _IdentifyLayerSelection = QgsMapToolIdentify.Type.LayerSelection
-    _IdentifyVectorLayer = QgsMapToolIdentify.Type.VectorLayer
+    _IdentifyLayerSelection = QgsMapToolIdentify.IdentifyMode.LayerSelection
 except AttributeError:
     _IdentifyLayerSelection = QgsMapToolIdentify.LayerSelection
+
+try:
+    _IdentifyVectorLayer = QgsMapToolIdentify.Type.VectorLayer
+except AttributeError:
     _IdentifyVectorLayer = QgsMapToolIdentify.VectorLayer
 
 try:
@@ -143,6 +146,7 @@ class GeometryInfoMapTool(QgsMapToolIdentify):
 
     def canvasPressEvent(self, event):
         if event.button() == _LeftButton:
+            self._cleanup_rb()
             self.rb = QgsRubberBand(self.iface.mapCanvas(), _PolygonGeometry)
             self.rb.setFillColor(QColor(255, 255, 255, 20))
             self.rb.setColor(QColor(0, 0, 0, 50))
@@ -317,13 +321,11 @@ class GeometryInfoMapTool(QgsMapToolIdentify):
                                 selectedFeatures = layer.selectedFeatureIds()
                                 self.iface.setActiveLayer(layer)
 
-            self.rb.setColor(QColor(255, 255, 255, 0))
-            self.rb = None
-            self._move = False
+            self._cleanup_rb()
             return
 
         if self.rb and not self._move:
-            self.rb = None
+            self._cleanup_rb()
 
             found_features = self._identify_at_event(event)
             if found_features:
